@@ -265,7 +265,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .stores-grid { display: grid; gap: 2rem; grid-template-columns: 1fr; }
 @media (min-width: 768px) { .stores-grid { grid-template-columns: repeat(2, 1fr); } }
 .store-card { border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-md); background: #fff; }
-.store-card img { width: 100%; height: 16rem; object-fit: cover; }
+.store-card img { width: 100%; height: 20rem; object-fit: cover; object-position: center center; }
 .store-card__body { padding: 1.5rem; }
 .store-card__title {
     font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem;
