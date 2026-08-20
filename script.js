@@ -1,9 +1,15 @@
 const API_URL = "https://ingapet-estoque.onrender.com/api/export/site-data";
-const FALLBACK_TIMEOUT = 5000;
+const FALLBACK_TIMEOUT = 30000;
 
 async function fetchProducts() {
     const footerBottom = document.querySelector('.footer-bottom');
     
+    // Show loading indicator
+    const grid = document.querySelector('.products-grid');
+    if (grid) {
+        grid.innerHTML = '<div style="text-align:center;padding:2rem;grid-column:1/-1;"><p style="color:#888;">Carregando produtos...</p></div>';
+    }
+
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), FALLBACK_TIMEOUT);
 
@@ -19,7 +25,7 @@ async function fetchProducts() {
                 const updateInfo = document.createElement('p');
                 updateInfo.style.fontSize = '0.75rem';
                 updateInfo.style.marginTop = '0.5rem';
-                const updateInfo.style.opacity = '0.6';
+                updateInfo.style.opacity = '0.6';
                 updateInfo.className = 'stock-update-info';
                 updateInfo.innerText = `Estoque sincronizado em: ${date}`;
                 
@@ -30,6 +36,10 @@ async function fetchProducts() {
         }
     } catch (err) {
         console.warn("IngaPet: Usando catálogo local (API offline ou em standby)");
+        // Restore static content on failure
+        if (grid) {
+            grid.innerHTML = '<div style="text-align:center;padding:2rem;grid-column:1/-1;"><p style="color:#888;">Catálogo indisponível no momento. Tente novamente em breve.</p></div>';
+        }
     }
 }
 
@@ -42,7 +52,7 @@ function renderProducts(products) {
         const badge = isOutOfStock 
             ? '<span class="product-card__badge" style="background:#666;">Esgotado</span>' 
             : (p.badge ? `<span class="product-card__badge">${p.badge}</span>` : '');
-        
+
         const waLink = `https://wa.me/5544998810928?text=Olá! Tenho interesse no produto: ${p.name}`;
         
         return `
